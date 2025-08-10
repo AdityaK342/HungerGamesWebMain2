@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <StartupObject>HungerGames.App</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ArenaVisualizer\ArenaVisualizer.csproj" />
+    <ProjectReference Include="..\Arena\Arena.csproj" />
+    <ProjectReference Include="..\DongUtility\DongUtility.csproj" />
+    <ProjectReference Include="..\HungerGamesCore\HungerGamesCore.csproj" />
+    <ProjectReference Include="..\HungerGamesInterface\HungerGamesInterface.csproj" />
+    <ProjectReference Include="..\NeuralNet\NeuralNet.csproj" />
+  </ItemGroup>
+
+</Project>

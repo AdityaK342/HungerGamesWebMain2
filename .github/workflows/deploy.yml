@@ -1,0 +1,65 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore
+
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+
+    - name: Publish Blazor WASM
+      run: dotnet publish HungerGameWeb/HungerGameWeb.csproj -c Release -o publish --nologo
+
+    - name: Change base-tag in index.html from / to HungerGameVisuals
+      run: sed -i 's/<base href="\/" \/>/<base href="\/HungerGameVisuals\/" \/>/g' publish/wwwroot/index.html
+
+    - name: Fix service-worker-assets.js base path
+      run: |
+        if [ -f "publish/wwwroot/service-worker-assets.js" ]; then
+          sed -i 's/"\/"/"\\/HungerGameVisuals\\/"/g' publish/wwwroot/service-worker-assets.js
+        fi
+
+    - name: Add .nojekyll file
+      run: touch publish/wwwroot/.nojekyll
+
+    - name: Copy files to docs folder
+      run: |
+        rm -rf docs
+        mkdir -p docs
+        cp -r publish/wwwroot/* docs/
+
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add docs
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "Deploy to GitHub Pages"
+          git push
+        fi 

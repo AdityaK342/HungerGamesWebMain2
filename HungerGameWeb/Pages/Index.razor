@@ -1,0 +1,150 @@
+@page "/"
+@using HungerGameWeb.Services
+@using HungerGameWeb.Components
+@inject SimulationService SimulationService
+@inject IJSRuntime JSRuntime
+@implements IDisposable
+
+<PageTitle>Hunger Game Visualizer</PageTitle>
+
+<div class="main-container">
+    <div class="arena-section">
+        <CanvasView />
+    </div>
+    
+    <div class="controls-section">
+        <div class="control-group">
+            <h3>Simulation Control</h3>
+            <div class="control-buttons">
+                <button class="btn btn-primary" @onclick="StartSimulation" disabled="@SimulationService.IsRunning">
+                    Start
+                </button>
+                <button class="btn btn-secondary" @onclick="PauseSimulation" disabled="@(!SimulationService.IsRunning)">
+                    Pause
+                </button>
+                <button class="btn btn-danger" @onclick="ResetSimulation">
+                    Reset
+                </button>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <h3>Speed Control</h3>
+            <div class="control-buttons">
+                <button class="btn btn-secondary" @onclick="() => SetSpeed(0.5f)">0.5x</button>
+                <button class="btn btn-secondary" @onclick="() => SetSpeed(1f)">1x</button>
+                <button class="btn btn-secondary" @onclick="() => SetSpeed(2f)">2x</button>
+                <button class="btn btn-secondary" @onclick="() => SetSpeed(4f)">4x</button>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <h3>Statistics</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-label">Time</div>
+                    <div class="stat-value">@stats.Time.ToString("F1")s</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Hares Alive</div>
+                    <div class="stat-value">@stats.AliveHares</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Lynxes Alive</div>
+                    <div class="stat-value">@stats.AliveLynxes</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Hares Caught</div>
+                    <div class="stat-value">@stats.TotalHaresCaught</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <h3>Display Options</h3>
+            <div class="checkbox-item">
+                <input type="checkbox" id="vision-cones" @bind="showVisionCones" @bind:after="UpdateRenderOptions" />
+                <label for="vision-cones">Show Vision Cones</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="velocity-vectors" @bind="showVelocityVectors" @bind:after="UpdateRenderOptions" />
+                <label for="velocity-vectors">Show Velocity Vectors</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="show-ids" @bind="showIds" @bind:after="UpdateRenderOptions" />
+                <label for="show-ids">Show Animal IDs</label>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <h3>Arena Settings</h3>
+            <div class="setting-item">
+                <label for="arena-seed">Random Seed (optional)</label>
+                <input type="number" id="arena-seed" @bind="randomSeed" />
+            </div>
+            <button class="btn btn-secondary" @onclick="GenerateNewArena">Generate New Arena</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private SimulationStats stats = new();
+    private bool showVisionCones = false;
+    private bool showVelocityVectors = false;
+    private bool showIds = false;
+    private int? randomSeed = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        SimulationService.StatsUpdated += OnStatsUpdated;
+        await SimulationService.InitializeSimulation(seed: randomSeed);
+    }
+
+    private void OnStatsUpdated(SimulationStats newStats)
+    {
+        stats = newStats;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private async Task StartSimulation()
+    {
+        await SimulationService.StartSimulation();
+    }
+
+    private async Task PauseSimulation()
+    {
+        await SimulationService.PauseSimulation();
+    }
+
+    private async Task ResetSimulation()
+    {
+        await SimulationService.ResetSimulation();
+    }
+
+    private void SetSpeed(float speed)
+    {
+        SimulationService.SetSpeed(speed);
+    }
+
+    private async Task UpdateRenderOptions()
+    {
+        var options = new RenderOptions
+        {
+            ShowVisionCones = showVisionCones,
+            ShowVelocityVectors = showVelocityVectors,
+            ShowIds = showIds
+        };
+        await SimulationService.SetRenderOptions(options);
+    }
+
+    private async Task GenerateNewArena()
+    {
+        await SimulationService.ResetSimulation();
+        await SimulationService.InitializeSimulation(seed: randomSeed);
+    }
+
+    public void Dispose()
+    {
+        SimulationService.StatsUpdated -= OnStatsUpdated;
+    }
+} 
