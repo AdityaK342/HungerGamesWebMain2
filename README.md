@@ -1,2 +1,1 @@
-Test #1
-
+This is a web version of the Hunger Games Project from the Computation Science course taught at the Illinois Math and Science Academy by Dr. Peter Dong. The credit for the original code goes toward him. This is a just a edited version where all files are converted to c# and using Blazor Webaseembly + a little bit of Javascript it is able to be hosted through github pages.   
