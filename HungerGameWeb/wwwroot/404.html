@@ -1,0 +1,14 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta http-equiv="refresh" content="0; url=/HungerGamesWebFresh/">
+    <script>
+      const base = "/HungerGamesWebFresh/";
+      const keep = (location.pathname + location.search + location.hash)
+                   .replace(new RegExp("^" + base + "?"), "");
+      window.location.replace(base + keep);
+    </script>
+</head>
+<body>
+</body>
+</html>
