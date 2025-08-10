@@ -29,9 +29,10 @@ jobs:
         run: dotnet publish ./HungerGameWeb/HungerGameWeb.csproj -c Release -o buildout
 
       - name: Add .nojekyll and verify base href
-        run: |
-          touch buildout/wwwroot/.nojekyll
-          grep -q '<base href="/HungerGamesWebFresh/">' buildout/wwwroot/index.html || (echo "Base href missing/wrong" && exit 1)
+  run: |
+    touch buildout/wwwroot/.nojekyll
+    grep -q '<base href="/HungerGamesWebMain2/">' buildout/wwwroot/index.html || (echo "Base href missing/wrong" && exit 1)
+
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
