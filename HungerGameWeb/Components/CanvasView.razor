@@ -1,0 +1,39 @@
+@inject IJSRuntime JSRuntime
+@implements IAsyncDisposable
+
+<div class="canvas-container">
+    <canvas id="arena-canvas" width="800" height="600"></canvas>
+</div>
+
+@code {
+    private bool initialized = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !initialized)
+        {
+            try
+            {
+                var success = await JSRuntime.InvokeAsync<bool>("canvasInterop.initCanvas", "arena-canvas", 800, 600);
+                if (success)
+                {
+                    initialized = true;
+                    Console.WriteLine("Canvas initialized successfully");
+                }
+                else
+                {
+                    Console.WriteLine("Failed to initialize canvas");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error initializing canvas: {ex.Message}");
+            }
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        // Cleanup if needed
+    }
+} 

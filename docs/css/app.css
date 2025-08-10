@@ -1,0 +1,250 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #1a1a1a;
+    color: #ffffff;
+}
+
+#app {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: #1a1a1a;
+}
+
+.loading-text {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: #ffffff;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #333;
+    border-top: 5px solid #007acc;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Main layout */
+.main-container {
+    display: flex;
+    height: 100vh;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.arena-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.controls-section {
+    width: 300px;
+    background: #2d2d2d;
+    border-radius: 8px;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+/* Canvas styling */
+.canvas-container {
+    flex: 1;
+    background: #2d2d2d;
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#arena-canvas {
+    border: 2px solid #444;
+    border-radius: 4px;
+    background: #333;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* Controls styling */
+.control-group {
+    margin-bottom: 1.5rem;
+}
+
+.control-group h3 {
+    margin: 0 0 0.5rem 0;
+    color: #fff;
+    font-size: 1.1rem;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-primary {
+    background: #007acc;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #005a9a;
+}
+
+.btn-secondary {
+    background: #666;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #555;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Stats styling */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.stat-item {
+    background: #333;
+    padding: 0.75rem;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: #aaa;
+    margin-bottom: 0.25rem;
+}
+
+.stat-value {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+/* Settings styling */
+.setting-item {
+    margin-bottom: 1rem;
+}
+
+.setting-item label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.setting-item input,
+.setting-item select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background: #333;
+    color: #fff;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.checkbox-item input[type="checkbox"] {
+    width: auto;
+}
+
+/* Error UI */
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+        padding: 0.5rem;
+    }
+    
+    .controls-section {
+        width: 100%;
+        max-height: 300px;
+    }
+    
+    .control-buttons {
+        justify-content: center;
+    }
+} 

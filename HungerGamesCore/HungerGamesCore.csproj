@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0-windows7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Arena\Arena.csproj" />
+    <ProjectReference Include="..\DongUtility\DongUtility.csproj" />
+    <ProjectReference Include="..\Geometry\Geometry.csproj" />
+    <ProjectReference Include="..\NeuralNet\NeuralNet.csproj" />
+  </ItemGroup>
+
+</Project>
